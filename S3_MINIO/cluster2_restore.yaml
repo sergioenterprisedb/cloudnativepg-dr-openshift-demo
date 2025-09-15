@@ -1,0 +1,63 @@
+# Author      : Sergio Romera
+# Created     : 10/03/2022
+# Description : Cluster2 config file from cluster1 backups and WAL's.
+
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster2
+spec:
+  instances: 3
+  imageName: ###IMAGENAME###
+
+  replicationSlots:
+    highAvailability:
+      enabled: true
+
+  postgresql:
+
+    synchronous:
+      method: any
+      number: 1
+      # preferred: Focuses on self-healing and high availability by automatically 
+      # disabling synchronous replication when no replicas are available in the cluster.
+      dataDurability: preferred
+  
+    parameters:
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+
+  bootstrap:
+     recovery:
+       backup:
+         name: backup-test
+  
+  # Log file replication
+  # /!\ Comment replica to start cluster in RW
+  #replica:
+  #  enabled: true
+  #  source: cluster1
+
+  storage:
+    size: 1Gi
+
+  monitoring:
+   enablePodMonitor: true
+
+  externalClusters:
+    - name: cluster1
+      barmanObjectStore:
+        destinationPath: "###MINIO_DESTINATIONPATH###"
+        endpointURL: "###MINIO_ENDPOINTURL###"
+        s3Credentials:
+          accessKeyId:
+            name: minio-creds
+            key: MINIO_ACCESS_KEY
+          secretAccessKey:
+            name: minio-creds
+            key: MINIO_SECRET_KEY
+        data:
+          immediateCheckpoint: true
+        endpointCA:
+          name: crc-router-ca
+          key: ca.crt    
