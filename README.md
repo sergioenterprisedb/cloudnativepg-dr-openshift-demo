@@ -11,9 +11,10 @@ These scripts are based in CloudNativePG project:
 - [CloudNativePG](https://cloudnative-pg.io)
 - [CloudNativePG github](https://github.com/cloudnative-pg/cloudnative-pg)
 
-The aim is to be able to demoing CloudNativePG with Disaster Recovery in a Red Hat OpenShift environment.
-To replicate data from one cluster to each other, you must use an object storage. This demo has been configured to use MinIO (default configuration).
-If you have any problem, don't hesitate to contact me: sergio.romera@enterprisedb.com
+The goal is to demonstrate CloudNativePG with disaster recovery in a Red Hat OpenShift environment. 
+To replicate data from one cluster to another, object storage must be used. 
+This demo is configured to use MinIO (default configuration). If you have any problems, please feel free to contact me:
+sergio.romera@enterprisedb.com
 
 ![](./images/minio_login.png)
 
